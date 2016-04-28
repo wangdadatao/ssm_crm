@@ -4,4 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.datao.mapper.RoleMapper">
     <cache/>
+
+    <select id="findRoles" resultType="Role">
+        select * FROM t_role where id in (SELECT roleid from t_user_role WHERE userid = #{id})
+    </select>
+
 </mapper>

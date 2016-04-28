@@ -48,12 +48,15 @@
                     <h3 class="panel-title"><i class="fa fa-coffee"></i> CRM系统登录</h3>
                 </div>
                 <div class="panel-body">
-                    <c:if test="${not empty requestScope.errorMessage}">
-                        <div class="alert alert-danger">
-                                ${requestScope.errorMessage}
+
+                    <c:if test="${not empty param.errorMessage}">
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                           ${errorMessage}
                         </div>
                     </c:if>
-                    <form id="form-log" action="/user/log" method="post" role="form">
+
+                    <form id="form-log" method="post" role="form">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="请输入手机号" name="tel" type="text" autofocus>
