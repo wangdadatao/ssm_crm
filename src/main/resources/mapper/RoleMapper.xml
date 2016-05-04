@@ -9,4 +9,5 @@
         select * FROM t_role where id in (SELECT roleid from t_user_role WHERE userid = #{id})
     </select>
 
+
 </mapper>

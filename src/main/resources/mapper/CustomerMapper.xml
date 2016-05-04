@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datao.mapper.CustomerMapper">
+
+    <cache/>
+
+    <select id="findAll" resultType="Customer">
+        SELECT * FROM t_customer ORDER BY id DESC
+    </select>
+
+    <select id="findByParam" parameterType="map" resultType="Customer">
+        SELECT * from t_customer
+        <where>
+            <if test="seaName != null and seaName != ''">
+                (company LIKE #{seaName} or linkman like #{seaName})
+            </if>
+            <if test="seaTel != null and seaTel != ''">
+                AND tel = #{seaTel}
+            </if>
+            <if test="seaState != null and seaState != ''">
+                AND progress = #{seaState}
+            </if>
+            <if test="userid != null and userid != ''">
+                AND userid = #{userid} or userid IS NULL
+            </if>
+        </where>
+
+        ORDER BY id ${orderType}
+        limit ${start},${length}
+    </select>
+
+
+    <insert id="addNewCustomer" parameterType="Customer">
+        INSERT INTO t_customer(company,linkman,tel,address,email,wechat,
+        qq,mark,userid,progress,progresstime,createtime)
+        VALUES (#{company}, #{linkman}, #{tel}, #{address}, #{email}, #{wechat}, #{qq},
+         #{mark}, #{userid}, #{progress}, #{progresstime}, #{createtime})
+    </insert>
+
+    <select id="findCount" resultType="java.lang.Long">
+        SELECT COUNT(*) from t_customer
+    </select>
+
+    <select id="findCountByParam" resultType="java.lang.Long">
+        SELECT count(*) from t_customer
+        <where>
+            <if test="seaName != null and seaName != ''">
+                (company LIKE #{seaName} or linkman like #{seaName})
+            </if>
+            <if test="seaTel != null and seaTel != ''">
+                AND tel = #{seaTel}
+            </if>
+            <if test="seaState != null and seaState != ''">
+                AND progress = #{seaState}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByCustomerId" parameterType="int" resultType="Customer">
+        SELECT * from t_customer where id = #{id}
+    </select>
+
+    <update id="update" parameterType="Customer">
+        UPDATE t_customer
+        <set>
+            <if test="company != null">company = #{company},</if>
+            <if test="linkman != null">linkman = #{linkman},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="wechat != null">wechat = #{wechat},</if>
+            <if test="qq != null">qq = #{qq},</if>
+            <if test="mark != null">mark = #{mark},</if>
+            <if test="userid != null">userid = #{userid},</if>
+            <if test="progress != null">progress = #{progress},</if>
+            <if test="progresstime != null">progresstime = #{progresstime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delCustomer" parameterType="Customer">
+        DELETE from t_customer where id = #{id}
+    </delete>
+
+    <select id="pubCustomer" parameterType="Customer" flushCache="true">
+        UPDATE t_customer set userid = NULL where id = #{id}
+    </select>
+</mapper>

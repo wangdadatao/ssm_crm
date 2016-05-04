@@ -9,5 +9,12 @@
         SELECT * from t_user where tel = #{tel}
     </select>
 
+    <select id="findAll" resultType="User">
+        select * from t_user
+    </select>
+
+    <select id="findById" resultType="User">
+        SELECT * from t_user where id = #{id}
+    </select>
 
 </mapper>

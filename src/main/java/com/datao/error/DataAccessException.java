@@ -1,4 +1,4 @@
-package com.datao.util;
+package com.datao.error;
 
 /**
  * Created by 海涛 on 2016/4/28.

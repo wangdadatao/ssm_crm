@@ -48,11 +48,10 @@
                     <h3 class="panel-title"><i class="fa fa-coffee"></i> CRM系统登录</h3>
                 </div>
                 <div class="panel-body">
-
-                    <c:if test="${not empty param.errorMessage}">
-                        <div class="alert alert-warning alert-dismissible" role="alert">
+                    <c:if test="${not empty requestScope.Message}">
+                        <div class="alert ${Message.status}" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                           ${errorMessage}
+                           ${Message.message}
                         </div>
                     </c:if>
 

@@ -3,12 +3,12 @@ package com.datao.service;
 import com.datao.mapper.RoleMapper;
 import com.datao.pojo.Role;
 import com.datao.pojo.User;
+import com.datao.error.DataAccessException;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -72,9 +72,15 @@ public class ShiroDbRealm extends AuthorizingRealm {
         User user = userService.findByUserTel(tel);
 
         if (user != null) {
-            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
-        }
+            if (!user.getStatus().equals("正常")) {
+                throw new LockedAccountException("该帐号已被禁用！");
+            }
 
-        return null;
+            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+
+        } else {
+            System.out.println("该用户不存在！");
+            throw new UnknownAccountException("帐号或密码错误！");
+        }
     }
 }

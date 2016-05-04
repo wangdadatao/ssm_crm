@@ -1,5 +1,7 @@
 package com.datao.util;
 
+import com.datao.error.DataAccessException;
+
 import java.io.IOException;
 import java.util.Properties;
 
