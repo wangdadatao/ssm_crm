@@ -42,4 +42,6 @@ public interface CustomerMapper {
 
     //设置成公众的客户
     void pubCustomer(Customer customer);
+
+
 }

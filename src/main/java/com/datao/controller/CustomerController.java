@@ -2,9 +2,12 @@ package com.datao.controller;
 
 import com.datao.error.NotFoundException;
 import com.datao.pojo.Customer;
+import com.datao.pojo.Progress;
+import com.datao.pojo.ProgressFile;
 import com.datao.pojo.User;
 import com.datao.service.CustomerService;
 import com.datao.error.DataAccessException;
+import com.datao.service.ProgressService;
 import com.datao.service.UserService;
 import com.datao.util.ToUTF8;
 import com.google.common.collect.Maps;
@@ -34,6 +37,9 @@ public class CustomerController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private ProgressService progressService;
 
     /**
      * customer主页
@@ -133,9 +139,14 @@ public class CustomerController {
     public String showById(@PathVariable Integer id, Model model) {
         Customer customer = customerService.findCustomerById(id);
         List<User> users = userService.finAllUser();
+        List<Progress> progressList = progressService.findProgressByCustId(id);
+        List<ProgressFile> fileList = progressService.findProgressFileByCustId(id);
 
         model.addAttribute("users", users);
         model.addAttribute("customer", customer);
+        model.addAttribute("progressList",progressList);
+        model.addAttribute("fileList",fileList);
+
 
         return "customer/show";
 

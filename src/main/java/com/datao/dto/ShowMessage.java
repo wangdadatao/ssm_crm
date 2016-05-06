@@ -2,6 +2,7 @@ package com.datao.dto;
 
 /**
  * Created by 海涛 on 2016/4/29.
+ *
  */
 public class ShowMessage {
 
@@ -15,6 +16,7 @@ public class ShowMessage {
     private String message;
 
     public ShowMessage() {
+
     }
 
     public ShowMessage(String status, String message) {

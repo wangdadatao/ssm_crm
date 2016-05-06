@@ -124,7 +124,6 @@
 
         $("#userTable").DataTable({
 
-            "serverSide":true, //从服务端获取数据
 
             "ajax":{
                 url:"/account/users.json", //获取数据的URL

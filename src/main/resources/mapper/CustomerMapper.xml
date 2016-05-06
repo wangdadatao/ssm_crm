@@ -87,4 +87,8 @@
     <select id="pubCustomer" parameterType="Customer" flushCache="true">
         UPDATE t_customer set userid = NULL where id = #{id}
     </select>
+
+    <select id="findByUserid" resultType="Customer">
+        SELECT * from t_customer where userid = #{userid} or userid is null
+    </select>
 </mapper>

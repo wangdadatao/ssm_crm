@@ -4,6 +4,8 @@ import com.datao.error.DataAccessException;
 import com.datao.error.ForbiddenException;
 import com.datao.error.NotFoundException;
 import com.datao.mapper.CustomerMapper;
+import com.datao.mapper.ProgressFileMapper;
+import com.datao.mapper.ProgressMapper;
 import com.datao.mapper.UserMapper;
 import com.datao.pojo.Customer;
 import com.datao.pojo.User;
@@ -26,7 +28,18 @@ public class CustomerService {
     @Inject
     private UserMapper userMapper;
 
+    @Inject
+    private ProgressMapper progressMapper;
 
+    @Inject
+    private ProgressFileMapper progressFileMapper;
+
+
+    /**
+     * 根据参数查询Customer
+     * @param param
+     * @return
+     */
     public List<Customer> findCustomerlist(Map<String, Object> param) {
 
         if (ShiroUtil.isManager()) {
@@ -146,6 +159,9 @@ public class CustomerService {
         if (customer != null) {
             if (ShiroUtil.isManager()) {
                 customerMapper.delCustomer(customer);
+                progressFileMapper.delProgressFile(customer.getUserid());
+                progressMapper.delProgress(customer.getUserid());
+
             } else {
                 throw new ForbiddenException();
             }
@@ -174,5 +190,16 @@ public class CustomerService {
                 throw new DataAccessException("权限不足！");
             }
         }
+    }
+
+
+    /**
+     * 根据当前登录的用户查找相应的客户
+     * @return
+     * @param userid
+     */
+    public List<Customer> findCustomerByUser(Integer userid) {
+
+        return customerMapper.findByUserid(userid);
     }
 }

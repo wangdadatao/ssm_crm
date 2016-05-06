@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datao.mapper.ProgressMapper">
+    <cache/>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        SELECT COUNT(*) from t_progress
+        <where>
+            <if test="userid != null">userid = #{userid}</if>
+            <if test="progress != null">AND progress = #{progress}</if>
+            <if test="date != null">AND DATA(createtime) &gt;= #{date}</if>
+        </where>
+    </select>
+
+    <select id="findByParam" resultType="com.datao.pojo.Progress" resultMap="progressMap">
+        SELECT * FROM t_progress
+        <where>
+            <if test="userid != null and userid != ''">
+                userid = #{userid}
+            </if>
+            <if test="progress != null and progress != ''">
+                and progress = #{progress}
+            </if>
+            <if test="context != null and context != ''">
+                and mark like #{context}
+            </if>
+            <if test="date != null and date != ''">
+                and DATE(createtime) &gt;= #{date}
+            </if>
+
+        </where>
+        order by id desc
+
+        limit ${start},${size}
+
+    </select>
+
+    <resultMap id="progressMap" type="Progress">
+        <id property="id" column="id"/>
+        <result property="createtime" column="createtime"/>
+        <result property="custid" column="custid"/>
+        <result property="mark" column="mark"/>
+        <result property="progress" column="progress"/>
+        <result property="userid" column="userid"/>
+        <association property="user" column="userid" javaType="User"
+                     select="com.datao.mapper.UserMapper.findById"/>
+        <association property="customer" column="custid" javaType="Customer"
+                     select="com.datao.mapper.CustomerMapper.findByCustomerId"/>
+        <collection property="progressFileList" column="id" ofType="ProgressFile"
+                    select="com.datao.mapper.ProgressFileMapper.findByProgressId"/>
+    </resultMap>
+
+    <insert id="savePro" parameterType="Progress" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_progress(progress, mark, createtime, custid, userid)
+        VALUES (#{progress}, #{mark}, #{createtime}, #{custid}, #{userid})
+    </insert>
+
+    <delete id="delProgress" >
+        DELETE FROM t_progress where custid = #{custid}
+    </delete>
+
+    <select id="findProgressByCusId" resultType="Progress">
+        SELECT * from t_progress where custid = #{custid}
+    </select>
+
+</mapper>
